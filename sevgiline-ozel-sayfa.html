@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Senin İçin — Özel Hediye</title>
+  <style>
+    :root{--bg:#0f172a;--card:#0b1220;--accent:#ff6b81;--muted:#94a3b8}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(180deg,#07102a 0%, #08122f 60%), radial-gradient(800px 400px at 10% 20%, rgba(255,107,129,0.06), transparent), #001219;color:#e6eef8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .wrap{width:100%;max-width:980px}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .logo{width:74px;height:74px;border-radius:18px;background:linear-gradient(135deg,var(--accent),#ffb88c);display:flex;align-items:center;justify-content:center;font-weight:700;color:#08122f}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:4px 0 0;color:var(--muted)}
+
+    .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:18px}
+
+    .messages{padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border-radius:10px;min-height:220px}
+    .message{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:10px;border-radius:8px;margin-bottom:10px}
+    .message.you{align-self:flex-end;background:linear-gradient(90deg, rgba(255,107,129,0.08), rgba(255,107,129,0.03));border:1px solid rgba(255,107,129,0.08)}
+
+    .right{display:flex;flex-direction:column;gap:12px}
+    .photo{height:180px;border-radius:10px;background:linear-gradient(180deg,#0f172a,#051025);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#ffb88c);color:#07122f;font-weight:700;border:none;cursor:pointer}
+
+    .runaway-wrap{position:relative;height:120px;display:flex;align-items:center;justify-content:center}
+    #runaway{position:absolute;padding:12px 18px;border-radius:999px;border:2px solid rgba(255,255,255,0.08);background:#08122f;color:var(--accent);cursor:pointer}
+
+    footer{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
+
+    @media(max-width:880px){.grid{grid-template-columns:1fr;}.right{order:-1}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">❤</div>
+      <div>
+        <h1>Senin için — özel bir sayfa</h1>
+        <p class="lead">Küçük sürprizler ve hatıralarla dolu. Sayfayı kişiselleştir ve linki sevgiline gönder :)</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="grid">
+        <div>
+          <div class="messages" id="messages">
+            <div class="message">Merhaba! Bu sayfa tamamen sana özel ❤️</div>
+            <div class="message you">Seni çok seviyorum 😘</div>
+            <div class="message">Buraya fotoğraflar, videolar ve küçük notlar eklenebilir.</div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn" id="addMsg">Bana bir mesaj ekle</button>
+            <button class="btn" id="playSong">Şarkıyı çal</button>
+            <button class="btn" id="downloadBtn">Sayfayı indir (.html)</button>
+          </div>
+        </div>
+
+        <aside class="right">
+          <div class="photo">Fotoğrafını buraya sürükle veya değiştir</div>
+
+          <div class="card" style="padding:12px">
+            <strong>Küçük oyun</strong>
+            <p style="margin:8px 0;color:var(--muted)">Butona tıkla ama dikkat: hayır dediğinde kaçıyor 😉</p>
+            <div class="runaway-wrap">
+              <button id="runaway">HAYIR</button>
+            </div>
+          </div>
+
+          <div style="font-size:13px;color:var(--muted);">İstersen metinleri, fotoğrafı ve şarkıyı değiştirip linkini paylaşabilirsin.</div>
+        </aside>
+      </div>
+
+      <footer>Bu sayfa tek dosya halinde. Kendi resim ve metinlerinle kişiselleştir. ✨</footer>
+    </div>
+  </div>
+
+  <audio id="audio" src="" preload="none"></audio>
+
+  <script>
+    // Kaçan buton
+    const btn = document.getElementById('runaway');
+    const wrap = document.querySelector('.runaway-wrap');
+    function moveButton(e){
+      const r = wrap.getBoundingClientRect();
+      const x = Math.random()*(r.width-80)+10;
+      const y = Math.random()*(r.height-40)+10;
+      btn.style.left = x+'px';
+      btn.style.top = y+'px';
+    }
+    btn.addEventListener('mouseenter', moveButton);
+    btn.addEventListener('click', ()=>{
+      alert('Ben seni çok seviyorum ❤️');
+    });
+
+    // Mesaj ekleme
+    document.getElementById('addMsg').addEventListener('click', ()=>{
+      const text = prompt('Sevgiline söylemek istediğin mesajı yaz (kısa):','Seni seviyorum 🌙');
+      if(text){
+        const div = document.createElement('div');
+        div.className='message you';
+        div.textContent = text;
+        document.getElementById('messages').appendChild(div);
+        div.scrollIntoView({behavior:'smooth'});
+      }
+    });
+
+    // Şarkı oynatma (kullanıcı kendi mp3'ünü ekleyebilir)
+    const audio = document.getElementById('audio');
+    document.getElementById('playSong').addEventListener('click', ()=>{
+      if(!audio.src){
+        const url = prompt("Oynatmak istediğin şarkının URL'sini yapıştır (mp3 linki):",'');
+      if(url) audio.src = url;
+      }
+      if(audio.paused) audio.play(); else audio.pause();
+    });
+
+    // Sayfayı indirme (HTML olarak)
+    document.getElementById('downloadBtn').addEventListener('click', ()=>{
+      const html = '<!doctype html>' + document.documentElement.outerHTML;
+      const blob = new Blob([html],{type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'sevgiline-ozel-sayfa.html';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // Basit - sayfa yüklendiğinde mesajları hafifçe canlandır
+    window.addEventListener('load', ()=>{
+      const msgs = document.querySelectorAll('.message');
+      msgs.forEach((m,i)=>{m.style.opacity=0;m.style.transform='translateY(8px)';setTimeout(()=>{m.style.transition='all 450ms';m.style.opacity=1;m.style.transform='none'}, 120*i)});
+    });
+  </script>
+</body>
+</html>
